@@ -9,12 +9,12 @@ DEBUG = os.environ.get('DEBUG','on') == 'on'
 SECRET_KEY = os.environ.get('SECRET_KEY',
                             'tusm0@1a&d+g%qr0zq4j0&a%1ry59pvt_*5au#21zc6f(7l&j#')
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOST','localhost').split(',')
-
+# ALLOWED_HOSTS = os.environ.get('ALLOWED_HOST','localhost').split(',')
+ALLOWED_HOSTS = ['*']
 BASE_DIR = os.path.dirname(__file__)
 
 settings.configure(
-    DEBUG=DEBUG,
+    DEBUG=True,
     SECRET_KEY=SECRET_KEY,
     ROOT_URLCONF=__name__,
     ALLOWED_HOSTS=ALLOWED_HOSTS,
@@ -49,8 +49,9 @@ from django.http import HttpResponse,HttpResponseBadRequest
 from django.views.decorators.http import etag
 from django.core.wsgi import get_wsgi_application
 from django.core.cache import cache
-from django.urls import path,re_path
+from django.urls import path, re_path, reverse
 from django import forms
+from django.shortcuts import render
 
 from io import BytesIO
 from PIL import Image,ImageDraw
@@ -87,8 +88,9 @@ class ImageForm(forms.Form):
             cache.set(key, content, 60*60)
         return content
 
+
 def generate_etag(request, width, height):
-    content = 'Placeholder:{0} x {1}'.format(width,height)
+    content = 'Placeholder:{0} x {1}'.format(width, height)
     return hashlib.sha1(content.encode('utf-8')).hexdigest()
 
 
@@ -102,16 +104,18 @@ def placeholder(request, width, height ):
         return HttpResponseBadRequest("Invalid Image Request")
 
 
-
-
-
 def index(request):
-    return HttpResponse("hello world")
+    example = reverse('placeholder',kwargs={'width':50, 'height':50})
+    context = {
+        'example': request.build_absolute_uri(example)
+    }
+    print(context,'--',example)
+    return render(request, 'home.html', context)
 
 
 
 urlpatterns = [
-    path('',index,name='index'),
+    path('', index,name='index'),
     re_path(r'^image/(?P<width>[0-9]+)x(?P<height>[0-9]+)',placeholder,name='placeholder'),
 ]
 
