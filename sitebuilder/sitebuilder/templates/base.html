@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>{% block title %}Rapid Prototypes{% endblock %}
+</title>
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/site.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+</head>
+<body id='{% block body-id %}body{% endblock %}'>
+	{% block top-nav-wrapper %}
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button class="navbar-toggle" data-toggle='collapse' data-target='.navbar-collapse'>
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a href="" class="navbar-brand">Rapid Prototypes</a>
+			</div>
+
+			<div class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li {% if slug ==  'index' %}class="active"{% endif %}><a href="/">Home</a></li>
+					<li {% if slug ==  'contact' %}class="active"{% endif %}><a href="{% url  'page'  'contact'}">Contact</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li {% if slug ==  'login' %}class="active"{% endif %}><a href="{% url  'page'  'login' %}">Login</a></li>
+
+				</ul>
+			</div>
+
+		</div>
+	</div>
+	{% endblock %}
+
+    {% block content%}{% endblock %}
+    <script src="{% static 'js/jquery.min.js'%}"></script>
+    <script src="{% static 'js/bootstrap.min.js'%}"></script>
+</body>
+</html>
