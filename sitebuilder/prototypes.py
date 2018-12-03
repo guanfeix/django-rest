@@ -32,6 +32,7 @@ settings.configure(
         # 'django.contrib.messages',
         'django.contrib.staticfiles',
         'sitebuilder',
+        'compressor',
         # 'polls',
     ],
     TEMPLATES = [
