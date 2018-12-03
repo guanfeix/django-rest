@@ -39,7 +39,7 @@ settings.configure(
             'BACKEND': 'django.template.backends.django.DjangoTemplates',
             # 'DIRS': [os.path.join(BASE_DIR,"templates")],
             'DIRS': [],
-            'APP_DIRS':True,
+            'APP_DIRS': True,
         },
     ],
     STATIC_URL = '/static/',
@@ -47,7 +47,11 @@ settings.configure(
     #     os.path.join(BASE_DIR,"static"),
     # ],
     SITE_PAGES_DIRECTORY =
-        os.path.join(BASE_DIR,"pages"),
+        os.path.join(BASE_DIR, "pages"),
+    STATICFILES_FINDERS=(
+        'django.contrib.staticfiles.finders.FileSystemFinder',
+        'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    ),
 
 )
 
