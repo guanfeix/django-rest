@@ -14,7 +14,7 @@ ALLOWED_HOSTS = ['*']
 BASE_DIR = os.path.dirname(__file__)
 
 settings.configure(
-    DEBUG=True,
+    DEBUG=False,
     # COMPRESS_ENABLED = True,
     SECRET_KEY=SECRET_KEY,
     ROOT_URLCONF='sitebuilder.urls',
