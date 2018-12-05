@@ -30,9 +30,7 @@
 				<ul class="nav navbar-nav">
 					<li {% if slug == 'index' %}class="active"{% endif %}><a href="/">Home</a></li>
 					<li {% if slug == 'contact' %}class="active"{% endif %}><a href="{% url  'page' 'contact'%}">Contact</a></li>
-
-				</ul>
-				<ul class="nav navbar-nav navbar-right">
+                    <li>{% if slug == 'pricing' %}class="active"<a href="{% url 'page' 'pricing' %}"></a></li>
 					<li {% if slug == 'login' %}class="active"{% endif %}> <a href="{% url 'page' 'login'%}">Login</a></li>
 				</ul>
 			</div>
