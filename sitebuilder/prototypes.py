@@ -15,6 +15,7 @@ BASE_DIR = os.path.dirname(__file__)
 
 settings.configure(
     DEBUG=True,
+    COMPRESS_ENABLED = True,
     SECRET_KEY=SECRET_KEY,
     ROOT_URLCONF='sitebuilder.urls',
     ALLOWED_HOSTS=ALLOWED_HOSTS,
