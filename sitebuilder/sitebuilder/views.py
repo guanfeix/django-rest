@@ -40,6 +40,6 @@ def page(request, slug='index'):
 
     if page._meta is not None:
         meta = page._meta.render(Context())
-        extra_context = json.lodas(meta)
+        extra_context = json.loads(meta)
         context.update(extra_context)
     return render(request, 'page.html', context)
