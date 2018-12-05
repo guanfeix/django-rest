@@ -58,8 +58,9 @@ settings.configure(
     STATICFILES_STORAGE='django.contrib.staticfiles.storage.CachedStaticFilesStorage'
 
 )
+from django.core.wsgi import get_wsgi_application
 
-
+application = get_wsgi_application()
 if __name__ == "__main__":
     # os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
     try:
