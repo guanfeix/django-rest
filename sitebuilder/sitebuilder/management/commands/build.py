@@ -23,9 +23,22 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         """Requset pages and build output"""
-        if os.path.exists(settings.SITE_OUTPUT_DIRECTORY):
-            shutil.rmtree(settings.SITE_OUTPUT_DIRECTORY)
-        os.mkdir(settings.SITE_OUTPUT_DIRECTORY)
+        settings.DEBUG = False
+        if args:
+            pages = args
+            avaliable = list(get_pages())
+            invalid = []
+            for page in pages:
+                if page not in avaliable:
+                    invalid.append(page)
+            if invalid:
+                msg = 'Invaild pages: {}'.format(','.join(invalid))
+                raise CommandError(msg)
+        else:
+            pages = get_pages()
+            if os.path.exists(settings.SITE_OUTPUT_DIRECTORY):
+                shutil.rmtree(settings.SITE_OUTPUT_DIRECTORY)
+            os.mkdir(settings.SITE_OUTPUT_DIRECTORY)
         os.makedirs(settings.STATIC_ROOT, exist_ok=True)
         call_command('collectstatic',interactive=False,
                      clear=True, verbosity=0)
@@ -34,10 +47,10 @@ class Command(BaseCommand):
             url = reverse('page', kwargs={'slug': page})
             response = client.get(url)
             if page == 'index':
-                output_dir =  settings.SITE_OUTPUT_DIRECTORY
+                output_dir = settings.SITE_OUTPUT_DIRECTORY
             else:
-                output_dir = os.path.join(settings.SITE_OUTPUT_DIRECTORY,page)
+                output_dir = os.path.join(settings.SITE_OUTPUT_DIRECTORY, page)
                 os.makedirs(output_dir)
-            with open(os.path.join(output_dir,'index.html'),'wb') as f:
+            with open(os.path.join(output_dir, 'index.html'), 'wb') as f:
                 f.write(response.content)
 

@@ -3,7 +3,7 @@ import sys
 import hashlib
 
 from django.conf import settings
-
+from django import contrib.staticfiles.storage.CachedStaticFilesStorage
 DEBUG = os.environ.get('DEBUG','on') == 'on'
 
 SECRET_KEY = os.environ.get('SECRET_KEY',
@@ -53,8 +53,9 @@ settings.configure(
     STATICFILES_FINDERS=(
         'django.contrib.staticfiles.finders.FileSystemFinder',
         'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-        'compressor.finders.CompressorFinder',
-    ),
+        'compressor.finders.CompressorFinder',),
+    STATICFILES_STORAGE='django.contrib.staticfiles.storage.CachedStaticFilesStorage'
+
 )
 
 
