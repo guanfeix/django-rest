@@ -3,7 +3,7 @@ import sys
 import hashlib
 
 from django.conf import settings
-from django import contrib.staticfiles.storage.CachedStaticFilesStorage
+
 DEBUG = os.environ.get('DEBUG','on') == 'on'
 
 SECRET_KEY = os.environ.get('SECRET_KEY',
