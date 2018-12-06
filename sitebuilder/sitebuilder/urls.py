@@ -4,4 +4,4 @@ from .views import *
 urlpatterns = [
     re_path(r'^(?P<slug>[\w./-]+)/$', page, name='page'),
     path('', page, name='homepage'),
-]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+]
