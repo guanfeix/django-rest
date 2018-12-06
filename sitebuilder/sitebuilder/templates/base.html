@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{% load staticfiles compress %}
+{% load staticfiles %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,11 +8,11 @@
     <meta name="keywords" content="{{ keywords|default:'prototype'}}">
     <title>{% block title %}Rapid Prototypes{% endblock %}
 </title>
-    {% compress css %}
+
     <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/site.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
-    {% endcompress %}
+
 </head>
 <body id='{% block body-id %}body{% endblock %}'>
 	{% block top-nav-wrapper %}
@@ -42,9 +42,9 @@
 	{% endblock %}
 
     {% block content%}{% endblock %}
-    {% compress js %}
+
     <script src="{% static 'js/jquery.min.js'%}"></script>
     <script src="{% static 'js/bootstrap.min.js'%}"></script>
-    {% endcompress %}
+
 </body>
 </html>
