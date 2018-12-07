@@ -18,9 +18,9 @@ class NullFilter(django_filters.BooleanFilter):
         
         
 class SprintFilter(django_filters.FilterSet):
-    
-    end_min = django_filters.DateFilter(name='end', lookup_type='gte')
-    end_max = django_filters.DateFilter(name='end', lookup_type='lte')
+    end = django_filters.DateFilter()
+    end_min = django_filters.DateFilter(name='end', lookup_type='gt')
+    end_max = django_filters.DateFilter(name='end', lookup_type='lt')
     
     class Meta:
         model = Sprint
