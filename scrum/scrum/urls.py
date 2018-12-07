@@ -19,6 +19,7 @@ from board.urls import router
 
 from rest_framework.authtoken.views import obtain_auth_token
 urlpatterns = [
-    path('api/token',obtain_auth_token,name='api-token'),
-    path('api/', include(router.urls))
+    path('api/token', obtain_auth_token,name='api-token'),
+    path('api/', include(router.urls)),
+    path('',include(router.urls)),
 ]
