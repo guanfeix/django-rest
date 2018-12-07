@@ -1,25 +1,43 @@
-from rest_framework import viewsets, permissions, authentication
-from .models import *
-from .serializers import *
+from django.contrib.auth import get_user_model
 
+from rest_framework import authentication, permissions, viewsets, filters
 
-class SprintViewSet(viewsets):
-    """API endpoint for listing and creating sprints"""
+# from .forms import SprintFilter, TaskFilter
+from .models import Sprint, Task
+from .serializers import SprintSerializer, TaskSerializer, UserSerializer
 
-    queryset = Sprint.objects.order_by('end')
-    serializer_class = SprintSerializer
+User = get_user_model()
 
 
 class DefaultsMixin(object):
-    "default setting for view authentication,permissions filtering and pagination"
+    """Default settings for view authentication, permissions, filtering
+     and pagination."""
 
-    authentication_classes = (authentication.BasicAuthentication,
-                              authentication.TokenAuthentication)
-
-    permissions_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (
+        authentication.BasicAuthentication,
+        authentication.TokenAuthentication,
+    )
+    permission_classes = (
+        permissions.IsAuthenticated,
+    )
     paginate_by = 25
     paginate_by_param = 'page_size'
     max_paginate_by = 100
+    # filter_backends = (
+    #     filters.DjangoFilterBackend,
+    #     filters.SearchFilter,
+    #     filters.OrderingFilter,
+    # )
+
+
+class SprintViewSet(DefaultsMixin, viewsets.ModelViewSet):
+    """API endpoint for listing and creating sprints."""
+
+    queryset = Sprint.objects.order_by('end')
+    serializer_class = SprintSerializer
+    # filter_class = SprintFilter
+    search_fields = ('name',)
+    ordering_fields = ('end', 'name',)
 
 
 class TaskViewSet(DefaultsMixin, viewsets.ModelViewSet):
@@ -40,5 +58,3 @@ class UserViewSet(DefaultsMixin, viewsets.ReadOnlyModelViewSet):
     queryset = User.objects.order_by(User.USERNAME_FIELD)
     serializer_class = UserSerializer
     search_fields = (User.USERNAME_FIELD,)
-
-
