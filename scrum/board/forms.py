@@ -36,5 +36,4 @@ class TaskFilter(filters.FilterSet):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.filters['assigned'].extra.update(
-        	{'to_field_name': User.USERNAME_FIELD})
+        self.filters['assigned'].extra.update({'to_field_name': User.USERNAME_FIELD})
