@@ -16,10 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include ,re_path
 from board.urls import router
+from django.views.generic import TemplateView
 
 from rest_framework.authtoken.views import obtain_auth_token
 urlpatterns = [
     path('api/token', obtain_auth_token,name='api-token'),
     path('api/', include(router.urls)),
-    path('',include(router.urls)),
+    path('', TemplateView.as_view(template_name='board/index.html')),
 ]

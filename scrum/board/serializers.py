@@ -71,6 +71,7 @@ class TaskSerializer(serializers.ModelSerializer):
                 kwargs={User.USERNAME_FIELD: obj.assigned}, request=request)
         return links
 
+    # 对task和sprint 关联性进行校验-必须把正在做的任务分配给未完成的冲刺
     def validate_sprint(self, value):
         if self.instance and self.instance.pk:
             if value != self.instance.sprint:
@@ -91,6 +92,7 @@ class TaskSerializer(serializers.ModelSerializer):
         status = attrs.get('status', Task.STATUS_TODO)
         started = attrs.get('started')
         completed = attrs.get('completed')
+        # 对task的有效性进行校验-日期和任务状态要一致
         if not sprint and status != Task.STATUS_TODO:
             msg = _('Backlog tasks must have "Not Started" status.')
             raise serializers.ValidationError(msg)
