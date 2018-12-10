@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
-from django_filters import rest_framework as filters
-from rest_framework import authentication, permissions, viewsets
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import authentication, permissions, viewsets, filters
 
 from .forms import SprintFilter, TaskFilter
 from .models import Sprint, Task
@@ -24,8 +24,8 @@ class DefaultsMixin(object):
     paginate_by_param = 'page_size'
     max_paginate_by = 100
     filter_backends = (
-        filters.DjangoFilterBackend,
-        filters.SearchFilter,
+        DjangoFilterBackend,
+        # filters.SearchFilter,
         filters.OrderingFilter,
     )
 
@@ -35,7 +35,7 @@ class SprintViewSet(DefaultsMixin, viewsets.ModelViewSet):
 
     queryset = Sprint.objects.order_by('end')
     serializer_class = SprintSerializer
-    filter_class = SprintFilter
+    # filter_class = SprintFilter
     search_fields = ('name',)
     ordering_fields = ('end', 'name',)
 
@@ -45,7 +45,7 @@ class TaskViewSet(DefaultsMixin, viewsets.ModelViewSet):
 
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
-    filter_class = TaskFilter
+    # filter_class = TaskFilter
     search_fields = ('name', 'description',)
     ordering_fields = ('name', 'order', 'started', 'due', 'completed',)
 
