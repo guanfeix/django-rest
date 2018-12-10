@@ -13,14 +13,14 @@ class NullFilter(django_filters.BooleanFilter):
     
     def filter(self, qs, value):
         if value is not None:
-            return qs.filter(**{'%s__isnull' % self.name: value})
+            return qs.filter(**{'%s__isnull' % self.field_name: value})
         return qs
         
         
 class SprintFilter(django_filters.FilterSet):
     end = django_filters.DateFilter()
-    end_min = django_filters.DateFilter(name='end', lookup_expr='gt')
-    end_max = django_filters.DateFilter(name='end', lookup_expr='lt')
+    end_min = django_filters.DateFilter(field_name='end', lookup_expr='gt')
+    end_max = django_filters.DateFilter(field_name='end', lookup_expr='lt')
     
     class Meta:
         model = Sprint
