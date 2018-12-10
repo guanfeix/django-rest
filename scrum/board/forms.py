@@ -19,12 +19,13 @@ class NullFilter(django_filters.BooleanFilter):
         
 class SprintFilter(django_filters.FilterSet):
     end = django_filters.DateFilter()
-    end_min = django_filters.DateFilter(name='end', lookup_type='gt')
-    end_max = django_filters.DateFilter(name='end', lookup_type='lt')
+    end_min = django_filters.DateFilter(name='end', lookup_expr='gt')
+    end_max = django_filters.DateFilter(name='end', lookup_expr='lt')
     
     class Meta:
         model = Sprint
         fields = ('end_min', 'end_max', )
+
 
 
 class TaskFilter(django_filters.FilterSet):
@@ -34,7 +35,7 @@ class TaskFilter(django_filters.FilterSet):
     class Meta:
         model = Task
         fields = ('sprint', 'status', 'assigned', 'backlog', )
-        
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.filters['assigned'].extra.update(
