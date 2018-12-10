@@ -1,4 +1,4 @@
-import django_filters
+from django_filters import rest_framework as filters
 
 from django.contrib.auth import get_user_model
 
@@ -8,7 +8,7 @@ from .models import Sprint, Task
 User = get_user_model()
 
 
-class NullFilter(django_filters.BooleanFilter):
+class NullFilter(filters.BooleanFilter):
     """Filter on a field set as null or not."""
     
     def filter(self, qs, value):
@@ -17,18 +17,16 @@ class NullFilter(django_filters.BooleanFilter):
         return qs
         
         
-class SprintFilter(django_filters.FilterSet):
-    end = django_filters.DateFilter()
-    end_min = django_filters.DateFilter(field_name='end', lookup_expr='gt')
-    end_max = django_filters.DateFilter(field_name='end', lookup_expr='lt')
+class SprintFilter(filters.FilterSet):
+    end_min = filters.DateFilter(field_name='end', lookup_expr='gte')
+    end_max = filters.DateFilter(field_name='end', lookup_expr='lte')
     
     class Meta:
         model = Sprint
         fields = ('end_min', 'end_max', )
 
 
-
-class TaskFilter(django_filters.FilterSet):
+class TaskFilter(filters.FilterSet):
     
     backlog = NullFilter(name='sprint')
     

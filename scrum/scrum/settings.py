@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
-    'django-filters',
+    'django_filters',
     'board',
 ]
 
@@ -73,7 +73,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'scrum.wsgi.application'
 
-
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+        ...
+    ),
+}
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
