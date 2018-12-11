@@ -87,6 +87,7 @@ def shutdown(server):
 
 
 if __name__ == "__main__":
+    parse_command_line()
     application = Application([(r'/(?P<sprint>[0-9]+)', SprintHandler),])
     application.listen(8080)
     IOLoop.instance().start()
