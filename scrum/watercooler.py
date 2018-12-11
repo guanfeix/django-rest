@@ -88,7 +88,7 @@ def shutdown(server):
 
 if __name__ == "__main__":
     parse_command_line()
-    application = Application([(r'/(?P<sprint>[0-9]+)', SprintHandler),],debug=options.debug)
+    application = ScrumApplication(debug=options.debug)
     server = HTTPServer(application)
     server.listen(options.port)
     signal.signal(signal.SIGINT, lambda sig, frame: shutdown(server))
