@@ -13,8 +13,8 @@ from tornado.websocket import WebSocketHandler, WebSocketClosedError
 
 
 define('debug', default=False, type=bool, help='Run in debug mode')
-define('port', default=8080, type=int, help='Server port')
-define('allowed_hosts', default="localhost:8080", multiple=True,
+define('port', default=70, type=int, help='Server port')
+define('allowed_hosts', default="localhost:70", multiple=True,
        help='Allowed hosts for cross domain connections')
 
 
