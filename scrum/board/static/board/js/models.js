@@ -75,6 +75,7 @@
     });
     
     app.session = new Session();
+
     var BaseModel = Backbone.Model.extend({
         url: function () {
             var links = this.get('links'),

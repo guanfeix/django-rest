@@ -154,6 +154,146 @@
         }
     });
 
+    var AddTaskView = FormView.extend({
+        templateName: '#new-task-template',
+        submit: function (event) {
+            var self = this,
+                attributes = {};
+            FormView.prototype.submit.apply(this, arguments);
+            attributes = this.serializeForm(this.form);
+            app.collections.ready.done(function () {
+                app.tasks.create(attributes, {
+                    wait: true,
+                    success: $.proxy(self.success, self),
+                    error: $.proxy(self.modelFailure, self)
+                });
+            });
+        },
+        success: function (model, resp, options) {
+            this.done();
+        }
+    });
+
+    var StatusView = TemplateView.extend({
+        tagName: 'section',
+        className: 'status',
+        templateName: '#status-template',
+        events: {
+            'click button.add': 'renderAddForm'
+        },
+        initialize: function (options) {
+            TemplateView.prototype.initialize.apply(this, arguments);
+            this.sprint = options.sprint;
+            this.status = options.status;
+            this.title = options.title;
+        },
+        getContext: function () {
+            return {sprint: this.sprint, title: this.title};
+        },
+        renderAddForm: function (event) {
+            var view = new AddTaskView(),
+                link = $(event.currentTarget);
+            event.preventDefault();
+            link.before(view.el);
+            link.hide();
+            view.render();
+            view.on('done', function () {
+                link.show();
+            });
+        },
+        addTask: function (view) {
+            $('.list', this.$el).append(view.el);
+        }
+    });
+
+    var TaskDetailView = FormView.extend({
+        tagName: 'div',
+        className: 'task-detail',
+        templateName: '#task-detail-template',
+        events: _.extend({
+            'blur [data-field][contenteditable=true]': 'editField'
+        }, FormView.prototype.events),
+        initialize: function (options) {
+            FormView.prototype.initialize.apply(this, arguments);
+            this.task = options.task;
+            this.changes = {};
+            $('button.save', this.$el).hide();
+            this.task.on('change', this.render, this);
+            this.task.on('remove', this.remove, this);
+        },
+        getContext: function () {
+            return {task: this.task, empty: '-----'};
+        },
+        submit: function (event) {
+            FormView.prototype.submit.apply(this, arguments);
+            this.task.save(this.changes, {
+                wait: true,
+                success: $.proxy(this.success, this),
+                error: $.proxy(this.modelFailure, this)
+            });
+        },
+        success: function (model) {
+            this.changes = {};
+            $('button.save', this.$el).hide();
+        },
+        editField: function (event) {
+            var $this = $(event.currentTarget),
+                value = $this.text().replace(/^\s+|\s+$/g,''),
+                field = $this.data('field');
+            this.changes[field] = value;
+            $('button.save', this.$el).show();
+        },
+        showErrors: function (errors) {
+            _.map(errors, function (fieldErrors, name) {
+                var field = $('[data-field=' + name + ']', this.$el);
+                if (field.length === 0) {
+                    field = $('[data-field]', this.$el).first();
+                }
+                function appendError(msg) {
+                    var parent = field.parent('.with-label'),
+                        error = this.errorTemplate({msg: msg});
+                    if (parent.length  === 0) {
+                        field.before(error);
+                    } else {
+                        parent.before(error);
+                    }
+                }
+                _.map(fieldErrors, appendError, this);
+            }, this);
+        }
+    });
+
+    var TaskItemView = TemplateView.extend({
+        tagName: 'div',
+        className: 'task-item',
+        templateName: '#task-item-template',
+        events: {
+            'click': 'details'
+        },
+        initialize: function (options) {
+            TemplateView.prototype.initialize.apply(this, arguments);
+            this.task = options.task;
+            this.task.on('change', this.render, this);
+            this.task.on('remove', this.remove, this);
+        },
+        getContext: function () {
+            return {task: this.task};
+        },
+        render: function () {
+            TemplateView.prototype.render.apply(this, arguments);
+            this.$el.css('order', this.task.get('order'));
+        },
+        details: function () {
+            var view = new TaskDetailView({task: this.task});
+            this.$el.before(view.el);
+            this.$el.hide();
+            view.render();
+            view.on('done', function () {
+                this.$el.show();
+            }, this);
+        }
+    });
+
     var SprintView = TemplateView.extend({
         templateName: '#sprint-template',
         initialize: function (options) {
@@ -230,6 +370,5 @@
     app.views.LoginView = LoginView;
     app.views.HeaderView = HeaderView;
     app.views.SprintView = SprintView;
-
 
 })(jQuery, Backbone, _, app);
