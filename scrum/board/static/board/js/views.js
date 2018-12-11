@@ -1,7 +1,7 @@
 (function ($, Backbone, _, app) {
 
-    var TemplateView = Backbone.View.extend({
-        templateName: '',
+    var HomepageView = Backbone.View.extend({
+        templateName: '#home-template',
         initialize: function () {
             this.template = _.template($(this.templateName).html());
         },
